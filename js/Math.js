@@ -33,10 +33,10 @@ class box{
 		this.size = size;
 	}
 	
-	static fromSides(top, left, bottom, right){
+	static fromSides(left, top, right, bottom){
 		var r = new box();
 		
-		r.pos = new vec2(top, left);
+		r.pos = new vec2(left, top);
 		r.size = new vec2(right - left, bottom - top);
 		
 		return r;
@@ -67,8 +67,8 @@ class box{
 	}
 	isOverlapping(boxB){
 		return (
-			this.left >= boxB.right &&
-			this.right <= boxB.left &&
+			this.left <= boxB.right &&
+			this.right >= boxB.left &&
 			this.bottom >= boxB.top &&
 			this.top <= boxB.bottom 
 		);
@@ -80,7 +80,7 @@ class box{
 	}
 	
 	static getIntersect(boxA, boxB){
-		if(!boxA.isOverlapping)
+		if(!boxA.isOverlapping(boxB))
 			return null;
 		
 		var minLeft = Math.min(boxA.left, boxB.left);
@@ -89,6 +89,9 @@ class box{
 		var maxBottom = Math.max(boxA.bottom, boxB.bottom);
 		
 		return box.fromSides(minLeft, maxRight, minTop, maxBottom);
+	}
+	static decideCollisionSide(intersectBox, boxCollision){
+		return 3;
 	}
 }
 
@@ -104,8 +107,6 @@ class sprite{
 		var tpos = new vec2(this.destinationBox.left, this.destinationBox.top);
 		var tscale = new vec2(1);
 		if(this.isFlipped) tscale.x = -1;
-		
-		console.log(tpos);
 		
 		renderContext.translate(tpos.x, tpos.y);
 		renderContext.scale(tscale.x, tscale.y);

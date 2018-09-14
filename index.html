@@ -7,6 +7,7 @@
 
 <HTML>
 <head>
+	<script src="./js/Input.js"></script>
 	<script src="./js/Math.js"></script>
 	<script src="./js/Game.js"></script>
 	<script src="./js/Bird.js"></script>
@@ -14,6 +15,7 @@
 </head>
 <body>
 	<script>
+		Input.hookControlsToDocument();
 		LoadGame();
 		StartGame();
 		Step();

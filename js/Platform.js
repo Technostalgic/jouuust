@@ -12,14 +12,14 @@ class Platform{
 	}
 	
 	draw(){
-		this.hitbox.drawFill("#FFF");
+		this.hitbox.drawFill("#0F0");
 	}
 	
 	static createPlatforms(){
 		var r = [];
 		
-		var ground = new platform(
-			box.fromSides(0, nativeResolution.y - 12, nativeResolution.x, 12);
+		var ground = new Platform(
+			box.fromSides(0, nativeResolution.y - 12, nativeResolution.x, nativeResolution.y)
 		);
 		
 		r.push(ground);

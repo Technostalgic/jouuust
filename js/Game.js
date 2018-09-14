@@ -30,8 +30,8 @@ function LoadGame(){
 	renderContext = renderCanvas.getContext("2d");
 	
 	scaleCanvas = document.createElement("canvas");
-	scaleCanvas.width = nativeResolution.x * 3;
-	scaleCanvas.height = nativeResolution.y * 3;
+	scaleCanvas.width = nativeResolution.x * 2;
+	scaleCanvas.height = nativeResolution.y * 2;
 	scaleContext = scaleCanvas.getContext("2d");
 	
 	document.body.appendChild(scaleCanvas);
@@ -45,7 +45,7 @@ function LoadGame(){
 }
 
 function StartGame(){
-	platforms = platform.createPlatforms();
+	platforms = Platform.createPlatforms();
 	
 	p1 = new Bird(0, new vec2(50, 10));
 	p2 = new Bird(1, new vec2(270, 10));
@@ -66,9 +66,6 @@ function Step(){
 function Update(dt){
 	p1.update(dt);
 	p2.update(dt);
-	
-	for(var platform of platforms)
-		platform.draw();
 }
 
 function Render(){
@@ -77,6 +74,9 @@ function Render(){
 	
 	p1.draw();
 	p2.draw();
+	
+	for(var platform of platforms)
+		platform.draw();
 	
 	scaleContext.drawImage(renderCanvas, 0, 0, scaleCanvas.width, scaleCanvas.height);
 }

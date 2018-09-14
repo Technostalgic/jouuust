@@ -12,6 +12,7 @@ class Bird{
 		this.hitbox = new box(new vec2(), new vec2(8, 10));
 		this.alive = true;
 		this.team = 0;
+		this.controlScheme = this.team == 0 ? ControlScheme.player1Scheme : ControlScheme.player2Scheme;
 		
 		this.frame = 0;
 		this.isFlipped = false;
@@ -22,8 +23,9 @@ class Bird{
 		if(!this.alive) yOff = 32;
 		var xOff = this.frame * 16;
 		
-		var dbox = new box(new vec2(), new vec2(16));
+		var dbox = new box(new vec2(0, 0), new vec2(16));
 		dbox.setCenterAt(this.pos);
+		dbox.pos.y += 5;
 		
 		var r = new sprite(
 			gfx.birds,
@@ -36,16 +38,56 @@ class Bird{
 	
 	checkPlatformCollisions(){
 		for(var platform of platforms){
-			throw new exception();
-			if(this.hitbox.overlaps(platform.hitbox)){
-				var hit = box.getIntersect();
+			var hit = box.getIntersect(this.hitbox, platform.hitbox);
+			if(!hit) continue;
+			
+			switch(box.decideCollisionSide(hit)){
+				case 0: this.hitSolid_right(platform.hitbox); break;
+				case 1: this.hitSolid_left(platfrom.hitbox); break;
+				case 2: this.hitSolid_bottom(platform.hitbox); break;
+				case 3: this.hitSolid_top(platform.hitbox); break;
 			}
 		}
 	}
 	checkBirdCollision(otherBird){
 		
 	}
+
+	hitSolid_left(solidBox){
+		this.vel.x = Math.max(0, this.vel.x);
+	}
+	hitSolid_right(solidBox){
+		this.vel.x = Math.min(0, this.vel.x);
+	}
+	hitSolid_bottom(solidBox){
+		this.vel.y = Math.min(0, this.vel.y);
+	}
+	hitSolid_top(solidBox){
+		this.vel.y = Math.max(0, this.vel.y);
+		var dif = this.hitbox.bottom - solidBox.top;
+
+		this.pos.y -= dif;
+	}
 	
+	control(dt){
+		if(Input.isLeftPressed(this.controlScheme))
+			this.control_moveLeft();
+		if(Input.isRightPressed(this.controlScheme))
+			this.control_moveLeft();
+		if(Input.isUpPressed(this.controlScheme))
+			this.control_jump();
+	}
+	control_moveLeft(dt){
+		console.log("maif");
+		this.vel.x -= dt;
+	}
+	control_moveRight(dt){
+		this.vel.x += dt;
+	}
+	control_jump(dt){
+		this.vel.y -= 1;
+	}
+
 	update(dt){
 		var tvel = this.vel.times(dt);
 		this.pos = this.pos.plus(tvel);
@@ -56,11 +98,15 @@ class Bird{
 		if(this.vel.y > 10){
 			this.vel.y = 10;
 		}
+
+		this.control(dt);
 		
 		if(this.vel.x < 0)
 			this.isFlipped = true;
 		else if(this.vel.x > 0)
 			this.isFlipped = false;
+
+		this.checkPlatformCollisions();
 	}
 	
 	draw(){
