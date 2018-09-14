@@ -12,11 +12,11 @@ class ControlScheme{
         this.up = up;
     }
 
-    static player1Scheme(){
-        return new controlScheme(37, 39, 38);
+    static getPlayer1Scheme(){
+        return new ControlScheme(37, 39, 38);
     }
-    static player2Scheme(){
-        return new controlScheme(65, 68, 87);
+    static getPlayer2Scheme(){
+        return new ControlScheme(65, 68, 87);
     }
 }
 

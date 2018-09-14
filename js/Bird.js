@@ -12,7 +12,11 @@ class Bird{
 		this.hitbox = new box(new vec2(), new vec2(8, 10));
 		this.alive = true;
 		this.team = 0;
-		this.controlScheme = this.team == 0 ? ControlScheme.player1Scheme : ControlScheme.player2Scheme;
+		this.speed = 100;
+		this.controlScheme = 
+			this.team == 0 ? 
+				ControlScheme.getPlayer1Scheme() : 
+				ControlScheme.getPlayer2Scheme() ;
 		
 		this.frame = 0;
 		this.isFlipped = false;
@@ -71,23 +75,22 @@ class Bird{
 	
 	control(dt){
 		if(Input.isLeftPressed(this.controlScheme))
-			this.control_moveLeft();
+			this.control_moveLeft(dt);
 		if(Input.isRightPressed(this.controlScheme))
-			this.control_moveLeft();
+			this.control_moveRight(dt);
 		if(Input.isUpPressed(this.controlScheme))
-			this.control_jump();
+			this.control_jump(dt);
 	}
 	control_moveLeft(dt){
-		console.log("maif");
-		this.vel.x -= dt;
+		this.vel.x -= dt * this.speed;
 	}
 	control_moveRight(dt){
-		this.vel.x += dt;
+		this.vel.x += dt * this.speed;
 	}
 	control_jump(dt){
 		this.vel.y -= 1;
 	}
-
+	
 	update(dt){
 		var tvel = this.vel.times(dt);
 		this.pos = this.pos.plus(tvel);
@@ -102,9 +105,9 @@ class Bird{
 		this.control(dt);
 		
 		if(this.vel.x < 0)
-			this.isFlipped = true;
-		else if(this.vel.x > 0)
 			this.isFlipped = false;
+		else if(this.vel.x > 0)
+			this.isFlipped = true;	
 
 		this.checkPlatformCollisions();
 	}
