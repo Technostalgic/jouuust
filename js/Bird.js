@@ -43,7 +43,7 @@ class Bird{
 		
 		var dbox = new box(new vec2(0, 0), new vec2(16));
 		dbox.setCenterAt(this.pos);
-		dbox.pos.y += 5;
+		dbox.pos.y -= 3;
 		
 		var r = new sprite(
 			gfx.birds,
@@ -201,6 +201,10 @@ class Bird{
 	}
 	
 	draw(){
+		this.hitbox.drawFill("#00F");
+		
+		box.fromSides(this.pos.x, this.pos.y, this.pos.x + 1, this.pos.y + 1).drawFill("#FFF");
+		
 		var sprt = this.getSprite();
 		sprt.isFlipped = this.isFlipped;
 		

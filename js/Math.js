@@ -113,7 +113,10 @@ class sprite{
 	draw(){
 		var tpos = new vec2(this.destinationBox.left, this.destinationBox.top);
 		var tscale = new vec2(1);
-		if(this.isFlipped) tscale.x = -1;
+		if(this.isFlipped) {
+			tpos.x += this.destinationBox.width;
+			tscale.x = -1;
+		}
 		
 		renderContext.translate(tpos.x, tpos.y);
 		renderContext.scale(tscale.x, tscale.y);
@@ -122,7 +125,7 @@ class sprite{
 			this.spriteSheet,
 			this.spriteBox.left, this.spriteBox.top,
 			this.spriteBox.size.x, this.spriteBox.size.y,
-			this.destinationBox.width / -2, this.destinationBox.height / -2,
+			0, 0,
 			this.destinationBox.size.x, this.destinationBox.size.y
 		);
 			

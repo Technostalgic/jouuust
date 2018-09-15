@@ -8,6 +8,11 @@
 class Platform{
 	constructor(box){
 		this.hitbox = box;
+		this.texture = null;
+	}
+	
+	generateTexture(isGround = false){
+		
 	}
 	
 	draw(){
