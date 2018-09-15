@@ -48,7 +48,7 @@ function StartGame(){
 	platforms = Platform.createPlatforms();
 	
 	p1 = new Bird(0, new vec2(50, 10));
-	p2 = new Bird(1, new vec2(270, 10));
+	p2 = new Bird(1, new vec2(nativeResolution.x - 50, 10));
 	p2.isFlipped = true;
 }
 
@@ -66,6 +66,9 @@ function Step(){
 function Update(dt){
 	p1.update(dt);
 	p2.update(dt);
+
+	p1.checkBirdCollision(p2);
+	p2.checkBirdCollision(p1);
 }
 
 function Render(){

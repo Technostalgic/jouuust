@@ -23,7 +23,10 @@ class vec2{
 	}
 	
 	inverted(){
-		return new vec2(this.x * -1, this.y * -1);
+		return this.times(-1);
+	}
+	clone(){
+		return new vec2(this.x, this.y);
 	}
 }
 
@@ -62,6 +65,10 @@ class box{
 		return this.size.y;
 	}
 	
+	getCenter(){
+		return this.pos.plus(this.size.times(0.5));
+	}
+
 	setCenterAt(pos){
 		this.pos = pos.plus(this.size.times(-0.5));
 	}
