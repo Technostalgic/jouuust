@@ -53,7 +53,7 @@ function StartGame(){
 }
 
 function Step(){
-	var dt = currentTime - performance.now();
+	var dt = performance.now() - currentTime;
 	currentTime = performance.now();
 	
 	dt /= 1000;

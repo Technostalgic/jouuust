@@ -11,7 +11,7 @@ class Bird{
 		this.vel = new vec2();
 		this.hitbox = new box(new vec2(), new vec2(8, 10));
 		this.alive = true;
-		this.team = 0;
+		this.team = team;
 		this.speed = 100;
 		this.controlScheme = 
 			this.team == 0 ? 
@@ -19,7 +19,7 @@ class Bird{
 				ControlScheme.getPlayer2Scheme() ;
 		
 		this.frame = 0;
-		this.isFlipped = false;
+		this.isFlipped = this.team != 0;
 	}
 	
 	getSprite(){
@@ -83,9 +83,16 @@ class Bird{
 	}
 	control_moveLeft(dt){
 		this.vel.x -= dt * this.speed;
+
+		if(this.vel.x < 0)
+			this.isFlipped = true;
 	}
 	control_moveRight(dt){
 		this.vel.x += dt * this.speed;
+
+		console.log(this.vel.x);
+		if(this.vel.x > 0)
+			this.isFlipped = false;
 	}
 	control_jump(dt){
 		this.vel.y -= 1;
@@ -98,16 +105,11 @@ class Bird{
 		
 		var gravity = 100;
 		this.vel.y += dt * gravity;
-		if(this.vel.y > 10){
-			this.vel.y = 10;
+		if(this.vel.y > 500){
+			this.vel.y = 500;
 		}
 
 		this.control(dt);
-		
-		if(this.vel.x < 0)
-			this.isFlipped = false;
-		else if(this.vel.x > 0)
-			this.isFlipped = true;	
 
 		this.checkPlatformCollisions();
 	}
