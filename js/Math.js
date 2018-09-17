@@ -90,14 +90,25 @@ class box{
 		if(!boxA.isOverlapping(boxB))
 			return null;
 		
-		var minLeft = Math.min(boxA.left, boxB.left);
-		var maxRight = Math.max(boxA.right, boxB.right);
-		var minTop = Math.min(boxA.top, boxB.top);
-		var maxBottom = Math.max(boxA.bottom, boxB.bottom);
+		var maxLeft = Math.max(boxA.left, boxB.left);
+		var minRight = Math.min(boxA.right, boxB.right);
+		var maxTop = Math.max(boxA.top, boxB.top);
+		var minBottom = Math.min(boxA.bottom, boxB.bottom);
 		
-		return box.fromSides(minLeft, maxRight, minTop, maxBottom);
+		return box.fromSides(maxLeft, maxTop, minRight, minBottom);
 	}
 	static decideCollisionSide(intersectBox, boxCollision){
+		if(intersectBox.bottom == boxCollision.bottom)
+			return 2;
+		if(intersectBox.top == boxCollision.top)
+			return 3;
+		
+		// doesn't do anything because at least one of the previous conditions will always return true
+		if(intersectBox.left == boxCollision.left)
+			return 1;
+		if(intersectBox.right == boxCollision.right)
+			return 0;
+		
 		return 3;
 	}
 }

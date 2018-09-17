@@ -18,7 +18,7 @@ class Bird{
 		
 		this.team = team;
 		this.controlScheme = 
-			this.team == 0 ? 
+			this.team == 0 ?
 				ControlScheme.getPlayer1Scheme() :
 				ControlScheme.getPlayer2Scheme() ;
 		
@@ -60,9 +60,11 @@ class Bird{
 			var hit = box.getIntersect(this.hitbox, platform.hitbox);
 			if(!hit) continue;
 			
-			switch(box.decideCollisionSide(hit)){
-				case 0: this.hitSolid_right(platform.hitbox); break;
-				case 1: this.hitSolid_left(platfrom.hitbox); break;
+			this.hit = hit;
+			
+			switch(box.decideCollisionSide(hit, platform.hitbox)){
+				case 0: this.hitSolid_left(platform.hitbox); break;
+				case 1: this.hitSolid_right(platform.hitbox); break;
 				case 2: this.hitSolid_bottom(platform.hitbox); break;
 				case 3: this.hitSolid_top(platform.hitbox); break;
 			}
@@ -70,7 +72,7 @@ class Bird{
 	}
 	checkBirdCollision(otherBird){
 		if(!this.alive || !otherBird.alive) return;
-
+		
 		if(this.hitbox.isOverlapping(otherBird.hitbox))
 			this.hitBird(otherBird);
 	}
@@ -117,6 +119,16 @@ class Bird{
 
 		lbird.updateHitbox();
 		rbird.updateHitbox();
+		
+		var killThreshold = 1.5;
+		var dif = this.pos.y - birdB.pos.y;
+		if(dif < -killThreshold)
+			birdB.die();
+		else if(dif > killThreshold)
+			this.die();
+	}
+	die(){
+		this.alive = false;
 	}
 
 	control(dt){
@@ -201,10 +213,6 @@ class Bird{
 	}
 	
 	draw(){
-		this.hitbox.drawFill("#00F");
-		
-		box.fromSides(this.pos.x, this.pos.y, this.pos.x + 1, this.pos.y + 1).drawFill("#FFF");
-		
 		var sprt = this.getSprite();
 		sprt.isFlipped = this.isFlipped;
 		

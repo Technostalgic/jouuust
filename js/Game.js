@@ -23,6 +23,13 @@ var gfx = {
 	platforms: new Image()
 };
 
+function GameIsLoaded(){
+	return (
+		gfx.birds.complete &&
+		gfx.platforms.complete
+	);
+}
+
 function LoadGame(){
 	renderCanvas = document.createElement("canvas");
 	renderCanvas.width = nativeResolution.x;
@@ -42,6 +49,16 @@ function LoadGame(){
 	
 	gfx.birds.src = "./gfx/birds.png";
 	gfx.platforms.src = "./gfx/platforms.png";
+	
+	ContinueLoadingGame();
+}
+function ContinueLoadingGame(){
+	if(!GameIsLoaded()){
+		setTimeout(ContinueLoadingGame);
+		return;
+	}
+	StartGame();
+	Step();
 }
 
 function StartGame(){
